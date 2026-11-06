@@ -1,0 +1,453 @@
+/* ============================================================
+   style.css — Task List
+   Custom styles that complement Tailwind utility classes.
+   Only styles that cannot be expressed efficiently with Tailwind
+   are placed here.
+   ============================================================ */
+
+/* ── Smooth font rendering + theme transition ───────────────── */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Smooth colour transition on every surface when toggling theme */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ── Filter tab active state ────────────────────────────────── */
+.filter-btn {
+  color: #64748b; /* slate-500 */
+  border-bottom: 2px solid transparent;
+}
+
+.filter-btn:hover {
+  color: #2563EB; /* brand-blue */
+  background-color: #eff6ff; /* brand-blue-light */
+}
+
+.active-filter {
+  color: #2563EB;           /* brand-blue */
+  border-bottom-color: #2563EB;
+  background-color: #eff6ff;
+  font-weight: 600;
+}
+
+/* ── Custom checkbox (circle) ───────────────────────────────── */
+.task-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1.25rem;   /* 20px */
+  height: 1.25rem;
+  border-radius: 50%;
+  border: 2px solid #cbd5e1; /* slate-300 */
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+
+.task-checkbox:hover {
+  border-color: #2563EB;
+}
+
+.task-checkbox:checked {
+  background-color: #2563EB;
+  border-color: #2563EB;
+}
+
+/* Checkmark drawn with CSS */
+.task-checkbox:checked::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 5px;
+  width: 6px;
+  height: 10px;
+  border: 2px solid #ffffff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+
+/* ── Task item row ──────────────────────────────────────────── */
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;     /* 12px */
+  padding: 0.875rem 1.25rem; /* 14px 20px */
+  transition: background-color 0.12s;
+}
+
+.task-item:hover {
+  background-color: #f8fafc; /* slate-50 */
+}
+
+/* Task label text */
+.task-label {
+  flex: 1;
+  font-size: 0.875rem; /* 14px */
+  color: #334155;      /* slate-700 */
+  word-break: break-word;
+  transition: color 0.15s, text-decoration 0.15s;
+}
+
+.task-label.completed {
+  text-decoration: line-through;
+  color: #94a3b8; /* slate-400 */
+}
+
+/* ── Action buttons (edit / delete) ─────────────────────────── */
+.task-actions {
+  display: flex;
+  gap: 0.375rem; /* 6px */
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.task-item:hover .task-actions,
+.task-item:focus-within .task-actions {
+  opacity: 1;
+}
+
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;   /* 28px */
+  height: 1.75rem;
+  border-radius: 0.375rem; /* rounded-md */
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.12s, transform 0.1s;
+}
+
+.btn-icon:active {
+  transform: scale(0.92);
+}
+
+.btn-edit {
+  background-color: #eff6ff;
+  color: #2563EB;
+}
+
+.btn-edit:hover {
+  background-color: #dbeafe;
+}
+
+.btn-delete {
+  background-color: #fff1f2;
+  color: #f43f5e;
+}
+
+.btn-delete:hover {
+  background-color: #ffe4e6;
+}
+
+/* ── Modal animation ─────────────────────────────────────────── */
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-modal {
+  animation: modalIn 0.18s ease-out forwards;
+}
+
+/* ── Priority badge ──────────────────────────────────────────── */
+.priority-badge {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;     /* full pill */
+  font-size: 0.7rem;        /* 11px */
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+/* High — red/rose */
+.priority-badge--high {
+  background-color: #fff1f2; /* rose-50 */
+  color: #e11d48;            /* rose-600 */
+  border: 1px solid #fecdd3; /* rose-200 */
+}
+
+/* Medium — orange/amber */
+.priority-badge--medium {
+  background-color: #fff7ed; /* orange-50 */
+  color: #ea580c;            /* orange-600 */
+  border: 1px solid #fed7aa; /* orange-200 */
+}
+
+/* Low — green/emerald */
+.priority-badge--low {
+  background-color: #f0fdf4; /* green-50 */
+  color: #16a34a;            /* green-600 */
+  border: 1px solid #bbf7d0; /* green-200 */
+}
+
+/* ── Priority filter buttons ─────────────────────────────────── */
+.priority-btn {
+  color: #64748b;           /* slate-500 */
+  background-color: transparent;
+  border: 1.5px solid #e2e8f0; /* slate-200 */
+  cursor: pointer;
+}
+
+.priority-btn:hover {
+  border-color: #2563EB;
+  color: #2563EB;
+  background-color: #eff6ff;
+}
+
+/* Active priority filter inherits priority colours */
+.priority-btn.active-priority-filter[data-priority="all"] {
+  background-color: #2563EB;
+  border-color: #2563EB;
+  color: #ffffff;
+}
+
+.priority-btn.active-priority-filter[data-priority="high"] {
+  background-color: #e11d48;
+  border-color: #e11d48;
+  color: #ffffff;
+}
+
+.priority-btn.active-priority-filter[data-priority="medium"] {
+  background-color: #ea580c;
+  border-color: #ea580c;
+  color: #ffffff;
+}
+
+.priority-btn.active-priority-filter[data-priority="low"] {
+  background-color: #16a34a;
+  border-color: #16a34a;
+  color: #ffffff;
+}
+
+/* ── Responsive tweaks ───────────────────────────────────────── */
+@media (max-width: 480px) {
+  .task-actions {
+    /* Always visible on touch devices (no hover) */
+    opacity: 1;
+  }
+}
+
+/* ============================================================
+   DARK MODE
+   All overrides live under html.dark — toggled by script.js.
+   ============================================================ */
+
+/* ── Toggle button ───────────────────────────────────────────── */
+#theme-toggle {
+  background-color: #ffffff;
+  color: #334155; /* slate-700 */
+  border: 1.5px solid #e2e8f0;
+}
+#theme-toggle:hover {
+  background-color: #f1f5f9;
+}
+html.dark #theme-toggle {
+  background-color: #1e293b; /* slate-800 */
+  color: #f1f5f9;
+  border-color: #334155;
+}
+html.dark #theme-toggle:hover {
+  background-color: #273549;
+}
+
+/* ── Page background ─────────────────────────────────────────── */
+html.dark body {
+  background-color: #0f172a; /* slate-900 */
+}
+
+/* ── App header text ─────────────────────────────────────────── */
+html.dark h1 {
+  color: #f1f5f9; /* slate-100 */
+}
+html.dark header p {
+  color: #94a3b8; /* slate-400 */
+}
+
+/* ── Main card ───────────────────────────────────────────────── */
+html.dark main {
+  background-color: #1e293b; /* slate-800 */
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+
+/* ── Add task section border ─────────────────────────────────── */
+html.dark main > section {
+  border-color: #334155; /* slate-700 */
+}
+
+/* ── Task input ──────────────────────────────────────────────── */
+html.dark #task-input,
+html.dark #edit-input {
+  background-color: #0f172a;
+  border-color: #334155;
+  color: #f1f5f9;
+}
+html.dark #task-input::placeholder,
+html.dark #edit-input::placeholder {
+  color: #475569; /* slate-600 */
+}
+html.dark #task-input:focus,
+html.dark #edit-input:focus {
+  border-color: #3b82f6;
+}
+
+/* ── Priority select (add form + edit modal) ─────────────────── */
+html.dark #priority-select,
+html.dark #edit-priority-select {
+  background-color: #0f172a;
+  border-color: #334155;
+  color: #cbd5e1;
+}
+html.dark label {
+  color: #94a3b8;
+}
+
+/* ── Status filter tabs ──────────────────────────────────────── */
+html.dark .filter-btn {
+  color: #94a3b8;
+  border-bottom-color: transparent;
+}
+html.dark .filter-btn:hover {
+  background-color: #273549;
+  color: #93c5fd; /* blue-300 */
+}
+html.dark .active-filter {
+  color: #60a5fa; /* blue-400 */
+  border-bottom-color: #60a5fa;
+  background-color: #1e3a5f;
+}
+
+/* ── Priority filter bar ─────────────────────────────────────── */
+html.dark section.flex.items-center.gap-1\.5 {
+  background-color: #162032;
+  border-color: #334155;
+}
+html.dark .priority-btn {
+  color: #94a3b8;
+  border-color: #334155;
+}
+html.dark .priority-btn:hover {
+  background-color: #273549;
+  color: #93c5fd;
+  border-color: #3b82f6;
+}
+html.dark span.text-xs.text-slate-400 {
+  color: #64748b;
+}
+
+/* ── Task list dividers ──────────────────────────────────────── */
+html.dark #task-list {
+  border-color: #334155;
+}
+html.dark #task-list > li + li {
+  border-top-color: #334155;
+}
+
+/* ── Task item row ───────────────────────────────────────────── */
+html.dark .task-item:hover {
+  background-color: #162032;
+}
+
+/* ── Task checkbox ───────────────────────────────────────────── */
+html.dark .task-checkbox {
+  border-color: #475569;
+}
+html.dark .task-checkbox:hover {
+  border-color: #60a5fa;
+}
+html.dark .task-checkbox:checked {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+/* ── Task label ──────────────────────────────────────────────── */
+html.dark .task-label {
+  color: #cbd5e1; /* slate-300 */
+}
+html.dark .task-label.completed {
+  color: #475569; /* slate-600 */
+}
+
+/* ── Priority badges (softer in dark) ───────────────────────── */
+html.dark .priority-badge--high {
+  background-color: #3b0a1a;
+  color: #fda4af;   /* rose-300 */
+  border-color: #9f1239;
+}
+html.dark .priority-badge--medium {
+  background-color: #431407;
+  color: #fdba74;   /* orange-300 */
+  border-color: #9a3412;
+}
+html.dark .priority-badge--low {
+  background-color: #052e16;
+  color: #86efac;   /* green-300 */
+  border-color: #166534;
+}
+
+/* ── Action buttons ──────────────────────────────────────────── */
+html.dark .btn-edit {
+  background-color: #1e3a5f;
+  color: #60a5fa;
+}
+html.dark .btn-edit:hover {
+  background-color: #1e4080;
+}
+html.dark .btn-delete {
+  background-color: #3b0a1a;
+  color: #fb7185;
+}
+html.dark .btn-delete:hover {
+  background-color: #500d22;
+}
+
+/* ── Empty state ─────────────────────────────────────────────── */
+html.dark #empty-state {
+  color: #475569;
+}
+
+/* ── Card footer ─────────────────────────────────────────────── */
+html.dark main > footer {
+  background-color: #162032;
+  border-top-color: #334155;
+}
+html.dark #task-count {
+  color: #64748b;
+}
+html.dark #clear-completed {
+  color: #475569;
+}
+html.dark #clear-completed:hover {
+  color: #f43f5e;
+}
+
+/* ── Edit modal backdrop + card ──────────────────────────────── */
+html.dark #edit-modal > div {
+  background-color: #1e293b;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+}
+html.dark #modal-title {
+  color: #f1f5f9;
+}
+html.dark #edit-error {
+  color: #fda4af;
+}
+html.dark #modal-cancel {
+  border-color: #334155;
+  color: #94a3b8;
+}
+html.dark #modal-cancel:hover {
+  background-color: #273549;
+}
